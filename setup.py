@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="kb-sdk-py",
+    python_requires='>=3',
     version="0.0.1",
     py_modules="kb_sdk",
     packages=find_packages(),
