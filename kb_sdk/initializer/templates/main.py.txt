@@ -1,0 +1,9 @@
+
+class {{ module_name }}(object):
+
+    def __init__(self, context):
+        self.ctx = context
+        pass
+
+    def my_method(params):
+        return {'message': 'My report message'}

@@ -7,9 +7,12 @@ setup(
     py_modules="kb_sdk",
     packages=find_packages(),
     install_requires=[
-        'docopt',
-        'pyyaml',
-        'flask'
+        'docopt>=0.6.2',
+        'pyyaml>=3.12',
+        'flask>=1.0.2',
+        'cerberus>=1.2',
+        'python-dotenv>=0.8.2',
+        'coloredlogs>=9.3.1'
     ],
     entry_points={
         'console_scripts': [

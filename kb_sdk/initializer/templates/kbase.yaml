@@ -1,0 +1,9 @@
+module:
+    name: {{ module_name }}
+    description: Module description
+    version: 0.0.1
+    authors: [{{ username }}]
+
+narrative_methods: {}
+
+direct_methods: {}

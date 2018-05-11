@@ -2,11 +2,7 @@
 
 ## Usage
 
-_Install with Conda_
-
-```sh
-$ conda install kb-sdk-py -c kbase
-```
+_Install_ (TODO)
 
 _Run the CLI_
 
@@ -20,11 +16,17 @@ _Start a new project_
 $ kb-sdk-py init project_name [directory]
 ```
 
-_Run the development server_
+_Run the status server_
 
 ```sh
 $ cd project_name
-$ kb-sdk-py dev
+$ kb-sdk-py status
+```
+
+_Run tests_
+
+```sh
+$ kb-sdk-py test
 ```
 
 ## Development

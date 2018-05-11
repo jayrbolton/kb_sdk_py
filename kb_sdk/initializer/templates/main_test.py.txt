@@ -1,0 +1,7 @@
+import unittest
+
+
+class MainTest(unittest.TestCase):
+
+    def test_placeholder(self):
+        self.assertEqual(1, 2, 'fix me')

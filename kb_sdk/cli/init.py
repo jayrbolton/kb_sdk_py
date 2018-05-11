@@ -4,15 +4,14 @@ Execute `kb-sdk init`
 """
 
 from kb_sdk.initializer.initializer import initializer
+from kb_sdk.logger import logger
 
 
-def execute(args):
+def execute(args, env):
     name = args['<name>']
     directory = args['<directory>'] or name
-    print('Initializing a new SDK project with name', name, '...')
-    print('Name:', name)
-    print('Directory:', directory)
-    print('Checking uniqueness of name...')
-    print('Checking for your developer token...')
-    initializer(name, directory)
+    logger.info('Initializing "' + name + '" into ' + directory)
+    logger.info('Checking uniqueness of name...')
+    logger.info('Checking for your developer token...')
+    initializer(name, directory, env)
     return 'init'

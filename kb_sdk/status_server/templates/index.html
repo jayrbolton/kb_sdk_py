@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1 class='mt0'> KBase App Status </h1>
+
+    <h2 class='h3'> Module name: "{{ config['module']['name'] }}" </h2>
+
+    <p> 
+        {% if registered %}
+        Registered! 
+            <a href='https://narrative.kbase.us/#catalog/modules/{{ config['module']['name'] }}'>
+                <strong>View your module page here.</strong>
+            </a>
+        {% else %}
+        Currently unregistered –
+        <a href='https://appdev.kbase.us/#appcatalog/register'>
+            <strong>visit the registration page.</strong>
+        </a>
+        {% endif %}
+    </p>
+
+    <p> View catalog page </p>
+
+    </p>
+
+    <h2 class='h3'> Tests and Validation </h2>
+
+    <p> <button class='btn btn-primary'>Run Tests</button> (<code>kb-sdk test</code>)</p>
+
+    <p> Test coverage: <span class='bold'>93%</span> <a href='#'>(<strong>view details</strong>)</a> </p>
+
+    <p> <input type='checkbox' checked> Automatically run tests on file changes </p>
+
+    <ol>
+        <li> 
+            {% if env['KBASE_USERNAME'] %}
+            <span class='green'>☑</span> Username set
+            {% else %}
+            <span class='red'>☒</span> Set the KBASE_USERNAME environment variable
+            {% endif %}
+        </li>
+        <li> 
+            {% if env['KBASE_TOKEN'] %}
+              <span class='green'>☑</span> Authentication token set
+            {% else %}
+            <span class='red'>☒</span> Set the KBASE_TOKEN environment variable (help)
+            {% endif %}
+        </li>
+        <li> 
+          <span class='green'>☑</span> Configuration file is valid
+        </li>
+    </ol>
+
+    <h2 class='h3'> Help and Resources </h2>
+
+    <ul>
+        <li><a target='_blank' href='https://kbase.github.io/kb_sdk_docs/'>SDK Documentation</a></li>
+        <li><a target='_blank' href='https://narrative.kbase.us/#catalog'>KBase Catalogs</a></li>
+        <li><a target='_blank' href='https://github.com/kbaseapps'>Example Apps</a></li>
+    </ul>
+
+{% endblock %}
