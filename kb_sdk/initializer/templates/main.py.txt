@@ -1,5 +1,5 @@
 
-class {{ module_name }}(object):
+class Main:
 
     def __init__(self, context):
         self.ctx = context
