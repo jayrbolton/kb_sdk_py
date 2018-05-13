@@ -1,3 +1,7 @@
+"""
+Main entrypoint for running the methods in this app
+"""
+
 
 class Main:
 
@@ -5,5 +9,5 @@ class Main:
         self.ctx = context
         pass
 
-    def my_method(params):
+    def my_method(self, params):
         return {'message': 'My report message'}

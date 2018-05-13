@@ -10,7 +10,8 @@ from jinja2 import PackageLoader, Environment
 
 # Initialize the Jinja2 environment loader
 _env = Environment(
-    loader=PackageLoader('kb_sdk', 'initializer/templates')
+    loader=PackageLoader('kb_sdk', 'initializer/templates'),
+    keep_trailing_newline=True  # Required to have flake8 pass
 )
 
 # 'destination' is a path in the generated app where each file goes

@@ -1,4 +1,5 @@
 """KBase Software Development Kit
+Documentation: https://kbase.github.io/kb_sdk_docs/
 
 Usage:
   kb-sdk (-h | --help)
@@ -41,7 +42,7 @@ commands = {
 
 
 def main():
-    """ This function is the entrypoint that gets called by the CLI """
+    """ This function is the entrypoint that gets called by the kb-sdk-py CLI """
     args = docopt(__doc__, version='0.0.1', help=True)
     env = os.environ.copy()
     env['MODULE_DIR'] = os.getcwd()
@@ -65,14 +66,21 @@ def _load_config():
     with open('./kbase.yaml', 'r') as stream:
         logger.debug('Attempting to parse the YAML configuration')
         try:
-            yaml_config = yaml.load(stream)
+            config = yaml.load(stream)
         except yaml.YAMLError as err:
-            logger.debug('Error found as YAMLError')
             logger.error('Error loading YAML configuration: ' + err.problem)
             logger.error(err.problem_mark)
             exit(1)
-        if not isinstance(yaml_config, dict):
+        if not isinstance(config, dict):
+            # Handles the case if the yaml is a single string, array, etc
             logger.error('Invalid YAML format for kbase.yaml')
-            logger.error(yaml_config)
+            logger.error(config)
             exit(1)
-    return yaml_config
+    # Save some paths so we don't have to re-retrieve them elsewhere
+    cwd = os.getcwd()
+    config['paths'] = {
+        'root': cwd,
+        'main.py': os.path.join(cwd, 'src', 'main.py'),
+        'test_main.py': os.path.join(cwd, 'test', 'test_main.py')
+    }
+    return config

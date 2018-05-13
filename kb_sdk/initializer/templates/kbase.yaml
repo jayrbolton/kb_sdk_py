@@ -4,6 +4,6 @@ module:
     version: 0.0.1
     authors: [{{ username }}]
 
-narrative_methods: {}
+narrative_methods:
 
-direct_methods: {}
+direct_methods:

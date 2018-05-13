@@ -28,5 +28,7 @@ def execute(args, config, env):
     if module_option:
         args.append(module_option)
     logger.debug('Running: ' + " ".join(args))
-    proc = subprocess.Popen(args)
+    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in proc.stdout:
+        logger.info(line.decode('utf-8').rstrip())
     proc.wait()

@@ -14,6 +14,11 @@ setup(
         'python-dotenv>=0.8.2',
         'coloredlogs>=9.3.1'
     ],
+    extras_require={
+        'dev': [
+            'flake8>=3.5.0'
+        ]
+    },
     entry_points={
         'console_scripts': [
             'kb-sdk-py = kb_sdk.cli.cli:main'
