@@ -26,13 +26,12 @@ load_dotenv(dotenv_path='./.env')
 # Log level defaults to INFO and can be set with the env var "LOG_LEVEL"
 level = os.getenv('LOG_LEVEL', logging.INFO)
 
-# Example: 18:40:30 INFO     : Running `kb-sdk dev`
-formatter = '%(asctime)s %(levelname)-9s: %(message)s'
-time_format = '%H:%M:%S'
+# Example: INFO     : Running `kb-sdk dev`
+formatter = '%(levelname)-9s: %(message)s'
 
 # Instantiate the logger with the handler and level
 logger = logging.getLogger('kb-sdk')
-coloredlogs.install(logger=logger, fmt=formatter, datefmt=time_format, level=level)
+coloredlogs.install(logger=logger, fmt=formatter, level=level)
 # Fetch the handler we just created
 main_handler = logger.handlers[-1]
 
