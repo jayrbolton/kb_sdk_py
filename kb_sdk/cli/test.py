@@ -4,11 +4,9 @@ Execute `kb-sdk test <module.Class.method>`
 This is called from ./cli.py
 """
 
-import subprocess
-import os
-
 import kb_sdk.cli.validate as validate
 from kb_sdk.logger import logger
+from kb_sdk.test_runner.run import run_tests
 
 
 def execute(args, config, env):
@@ -18,17 +16,4 @@ def execute(args, config, env):
         logger.debug('Skipping validation')
     logger.debug('Calling unit tests')
     module_option = args['<module.Class.method>']
-    custom_env = os.environ.copy()
-    custom_env['PYTHONPATH'] = 'src'
-    test_dir = os.path.join(os.getcwd(), 'test')
-    args = [
-        'python', '-m', 'unittest', 'discover',
-        test_dir
-    ]
-    if module_option:
-        args.append(module_option)
-    logger.debug('Running: ' + " ".join(args))
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in proc.stdout:
-        logger.info(line.decode('utf-8').rstrip())
-    proc.wait()
+    run_tests(config, env, module_option)

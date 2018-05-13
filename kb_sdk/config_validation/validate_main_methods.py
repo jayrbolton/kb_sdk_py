@@ -1,6 +1,8 @@
 """
 Validate that the methods registered in kbase.yaml match those found in src/main.py
 Also validate that the parameters for every method match a certain form
+
+TODO Can also validate whether each method has a docstring
 """
 
 import importlib.util as import_util

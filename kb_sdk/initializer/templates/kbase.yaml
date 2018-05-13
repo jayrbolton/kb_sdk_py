@@ -1,9 +1,17 @@
 module:
-    name: {{ module_name }}
-    description: Module description
-    version: 0.0.1
-    authors: [{{ username }}]
+  name: {{ module_name }}
+  description: Module description
+  version: 0.0.1
+  authors: [{{ username }}]
 
 narrative_methods:
+  my_method:
+    input:
+      parameter1:
+        type: string
+        label: Param One
+      parameter2:
+        type: integer
+        label: Param Two
 
 direct_methods:

@@ -47,3 +47,5 @@ Test that things are set up by running `kb-sdk-py`.
 * `/kb_sdk/cli`: Command line handler
 * `/kb_sdk/dev_server`: Development server with flask
 * `/kb_sdk/initializer`: Module initializer
+* `/kb_sdk/config_validation`: Validate config found in kbase.yaml
+* `/kb_sdk/param_validation`: Validate parameters passed to Main

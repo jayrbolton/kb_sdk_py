@@ -23,6 +23,7 @@ def validate(config):
         exit(1)
     validate_main_methods(config)
     _run_flake8()
+    logger.info('Congrats! Everything looks valid.')
 
 
 def _run_flake8():
