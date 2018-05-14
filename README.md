@@ -74,7 +74,7 @@ Build the package:
 # Inside your python env:
 $ pip install -U twine wheel
 $ python setup.py bdist_wheel
-$ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+$ twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*
 ```
 
 ### Project anatomy
