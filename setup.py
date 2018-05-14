@@ -4,7 +4,7 @@ setup(
     name='kb-sdk-py',
     description='KBase Software Development Kit',
     python_requires='>=3',
-    version='0.0.1a4',
+    version='0.0.1a5',
     packages=find_packages(),
     install_requires=[
         'docopt>=0.6.2',
