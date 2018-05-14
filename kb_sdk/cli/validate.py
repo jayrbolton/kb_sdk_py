@@ -10,7 +10,6 @@ from kb_sdk.logger import logger
 
 def execute(args, config, env):
     logger.debug('Validating configuration')
-    validate(config)  # Will throw and exit if invalid
     logger.debug('Validating ENV vars')
     if not env.get('KBASE_USERNAME'):
         logger.error('Set your KBASE_USERNAME environment variable')
@@ -18,3 +17,4 @@ def execute(args, config, env):
     if not env.get('KBASE_TOKEN'):
         logger.error('Set your KBASE_TOKEN environment variable')
         exit(1)
+    validate(config)  # Will throw and exit if invalid

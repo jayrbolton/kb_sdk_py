@@ -16,7 +16,7 @@ Usage:
 """
 
 import logging
-# from logging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 import os
 import coloredlogs
 from dotenv import load_dotenv
@@ -37,15 +37,15 @@ main_handler = logger.handlers[-1]
 
 
 # Create the file logger
-# if not os.path.isdir('log'):
-#     if os.path.isfile('log'):
-#         logger.error('log/ should be a directory; it is a file')
-#         exit(1)
-#     os.makedirs('log')
-# file_formatter = logging.Formatter('%(asctime)s - %(levelname)-9s: %(message)s')
-# log_path = os.path.join('log', 'debug.log')
-# # maxBytes is 1MB
-# file_handler = RotatingFileHandler(log_path, maxBytes=1000000, backupCount=1)
-# file_handler.setLevel(logging.DEBUG)
-# file_handler.setFormatter(file_formatter)
-# logger.addHandler(file_handler)
+if not os.path.isdir('log'):
+    if os.path.isfile('log'):
+        logger.error('log/ should be a directory; it is a file')
+        exit(1)
+    os.makedirs('log')
+file_formatter = logging.Formatter('%(asctime)s - %(levelname)-9s: %(message)s')
+log_path = os.path.join('log', 'debug.log')
+# maxBytes is 1MB
+file_handler = RotatingFileHandler(log_path, maxBytes=1000000, backupCount=1)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)

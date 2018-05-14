@@ -4,8 +4,16 @@
 
 _Install_
 
+Note that in the future this can be installed with pip and conda in one command
+
 ```sh
-$ pip install --extra-index-url https://test.pypi.org/pypi kb-sdk-py 
+$ git clone https://github.com/jayrbolton/kb_sdk_py
+$ cd kb_sdk_py
+$ pip3 install virtualenv
+$ python3 -m virtualenv env
+$ source env/bin/activate
+$ pip install --editable .[dev]
+$ kb-sdk-py --help
 ```
 
 _Run the CLI_
