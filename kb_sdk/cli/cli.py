@@ -5,7 +5,7 @@ Usage:
   kb-sdk (-h | --help)
   kb-sdk init <name> [<directory>]
   kb-sdk status
-  kb-sdk test [<module.Class.method>] [--skip-validation]
+  kb-sdk test [<module.Class.method>] [--skip-validation] [--build]
   kb-sdk validate
 
 Commands:
@@ -46,6 +46,7 @@ def main():
     args = docopt(__doc__, version='0.0.1', help=True)
     env = os.environ.copy()
     env['MODULE_DIR'] = os.getcwd()
+    env['PYTHONPATH'] = 'src'
     if args['init']:
         # `init` is a special case; don't load config
         logger.info('Initializing a new app...')
@@ -78,8 +79,11 @@ def _load_config():
             exit(1)
     # Save some paths so we don't have to re-retrieve them elsewhere
     cwd = os.getcwd()
+    config['docker_image_name'] = 'kbase-apps/' + config['module']['name']
     config['paths'] = {
         'root': cwd,
+        'test': os.path.join(cwd, 'test'),
+        'src': os.path.join(cwd, 'src'),
         'main.py': os.path.join(cwd, 'src', 'main.py'),
         'test_main.py': os.path.join(cwd, 'test', 'test_main.py')
     }

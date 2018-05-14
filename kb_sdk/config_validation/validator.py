@@ -130,5 +130,7 @@ main_schema = {
             'schema': method_schema
         }
     },
-    'paths': {'type': 'dict', 'allow_unknown': True}  # Set in cli.py
+    # Settings from cli.py
+    'paths': {'type': 'dict', 'allow_unknown': True},
+    'docker_image_name': {'type': 'string'}
 }

@@ -12,7 +12,8 @@ setup(
         'flask>=1.0.2',
         'cerberus>=1.2',
         'python-dotenv>=0.8.2',
-        'coloredlogs>=9.3.1'
+        'coloredlogs>=9.3.1',
+        'docker>=3.3.0'
     ],
     extras_require={
         'dev': [

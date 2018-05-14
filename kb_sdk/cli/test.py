@@ -6,7 +6,7 @@ This is called from ./cli.py
 
 import kb_sdk.cli.validate as validate
 from kb_sdk.logger import logger
-from kb_sdk.test_runner.run import run_tests
+from kb_sdk.test_runner.run_tests import run_tests
 
 
 def execute(args, config, env):
@@ -14,6 +14,8 @@ def execute(args, config, env):
         validate.execute(args, config, env)
     else:
         logger.debug('Skipping validation')
-    logger.debug('Calling unit tests')
-    module_option = args['<module.Class.method>']
-    run_tests(config, env, module_option)
+    options = {
+        'single_test': args['<module.Class.method>'],
+        'build': args.get('--build')
+    }
+    run_tests(config, env, options)
