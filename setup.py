@@ -17,7 +17,7 @@ setup(
         'docker>=3.3.0'
     ],
     package_data={
-        '': '*.jinja2'
+        'kb_sdk.initializer': ['templates/*.jinja2']
     },
     extras_require={
         'dev': [
