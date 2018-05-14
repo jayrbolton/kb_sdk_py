@@ -4,7 +4,7 @@ setup(
     name='kb-sdk-py',
     description='KBase Software Development Kit',
     python_requires='>=3',
-    version='0.0.1a2',
+    version='0.0.1a3',
     py_modules=['kb_sdk'],
     packages=find_packages(),
     install_requires=[

@@ -66,6 +66,17 @@ $ pip install --editable .
 
 Test that things are set up by running `kb-sdk-py`.
 
+#### Releasing on PyPi
+
+Build the package:
+
+```sh
+# Inside your python env:
+$ pip install -U twine wheel
+$ python setup.py bdist_wheel
+$ twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+```
+
 ### Project anatomy
 
 * `/kb_sdk`: Root package
