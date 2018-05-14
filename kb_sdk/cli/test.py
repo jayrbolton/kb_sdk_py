@@ -18,4 +18,4 @@ def execute(args, config, env):
         'single_test': args['<module.Class.method>'],
         'build': args.get('--build')
     }
-    run_tests(config, env, options)
+    run_tests(config, options)

@@ -1,4 +1,4 @@
-FROM kbase/kbase:sdkbase2.latest
+FROM jjeffryes/kbasepythonsdk:latest
 
 # -----------------------------------------
 # App-specific dependencies

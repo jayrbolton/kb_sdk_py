@@ -65,7 +65,7 @@ def _load_config():
         logger.error("Whoops, it doesn't look like we are in an SDK app directory")
         exit(1)
     with open('./kbase.yaml', 'r') as stream:
-        logger.debug('Attempting to parse the YAML configuration')
+        logger.debug('Parsing the YAML configuration')
         try:
             config = yaml.load(stream)
         except yaml.YAMLError as err:

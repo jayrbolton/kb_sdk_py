@@ -13,7 +13,7 @@ import docker
 from kb_sdk.logger import logger
 
 
-def run_tests(config, env, options):
+def run_tests(config, options):
     """
     :param config: A dict of configuration data from kbase.yaml
     :param env: Environment variables from os.environ and dotfile
@@ -26,7 +26,7 @@ def run_tests(config, env, options):
         logger.error('  Instructions here: https://docs.docker.com/install/')
         exit(1)
     _build_docker_image(config, options)
-    _run_unittest(config, env, options)
+    _run_unittest(config, options)
     end_time = time.time() - start_time
     logger.debug('Ran tests in ' + str(end_time) + ' seconds')
 
@@ -48,9 +48,9 @@ def _build_docker_image(config, options):
     modified = _is_dockerfile_modified()
     logger.debug('The Dockerfile has ' + ('not ' if not modified else '') + 'been modified')
     if modified or not image or options['build']:
-        logger.debug('Building docker image with name ' + image_name)
         # It's easier to log a subprocess command rather than using the docker-py build function
         args = ['docker', 'build', '.', '--tag', image_name]
+        logger.debug('Building docker image with: ' + ' '.join(args))
         proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in proc.stdout:
             logger.debug(line.decode('utf-8').rstrip())
@@ -79,15 +79,25 @@ def _is_dockerfile_modified():
     return modified
 
 
-def _run_unittest(config, env, options):
+def _run_unittest(config, options):
+    """
+    Run the unittests on the test directory
+    """
     logger.debug('Calling unit tests')
     image_name = config['docker_image_name']
-    # test_dir = config['paths']['test']
-    # test_command = '"python -m unittest discover test"'
-    test_command = 'python -m unittest discover test'
+    test_command = 'python -m unittest'
     if options.get('single_test'):
-        test_command += ' ' + options['single_test']
-    args = ['docker', 'run', image_name, 'bash', '-c', test_command]
+        # Don't make them type the test package name
+        test_command += ' test.' + options['single_test']
+    else:
+        test_command += ' discover test'
+    host_vol = os.path.join(os.getcwd(), 'build', 'work')
+    args = [
+        'docker', 'run',
+        '--volume=' + host_vol + ':/kb/module/work',
+        image_name,
+        'bash', '-c', test_command
+    ]
     logger.debug('Running: ' + ' '.join(args))
     proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     for line in proc.stdout:
