@@ -2,3 +2,5 @@ env
 tmp
 *.egg-info
 *.pyc
+build
+dist

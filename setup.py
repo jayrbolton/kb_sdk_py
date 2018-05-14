@@ -1,10 +1,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="kb-sdk-py",
+    name='kb-sdk-py',
+    description='KBase Software Development Kit',
     python_requires='>=3',
-    version="0.0.1",
-    py_modules="kb_sdk",
+    version='0.0.1a2',
+    py_modules=['kb_sdk'],
     packages=find_packages(),
     install_requires=[
         'docopt>=0.6.2',
@@ -15,6 +16,9 @@ setup(
         'coloredlogs>=9.3.1',
         'docker>=3.3.0'
     ],
+    package_data={
+        '': '*.jinja2'
+    },
     extras_require={
         'dev': [
             'flake8>=3.5.0'
@@ -24,5 +28,9 @@ setup(
         'console_scripts': [
             'kb-sdk-py = kb_sdk.cli.cli:main'
         ]
-    }
+    },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers'
+    ]
 )

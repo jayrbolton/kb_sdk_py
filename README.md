@@ -2,7 +2,11 @@
 
 ## Usage
 
-_Install_ (TODO)
+_Install_
+
+```sh
+$ pip install --extra-index-url https://test.pypi.org/pypi kb-sdk-py 
+```
 
 _Run the CLI_
 
