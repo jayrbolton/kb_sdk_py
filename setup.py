@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='kb-sdk-py',
+    name='kbase_cli',
     description='KBase Software Development Kit',
     python_requires='>=3',
     version='0.0.1a5',

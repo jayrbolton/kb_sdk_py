@@ -5,7 +5,7 @@ Usage:
   kb-sdk (-h | --help)
   kb-sdk init <name> [<directory>]
   kb-sdk status
-  kb-sdk test [<module.Class.method>] [--skip-validation] [--build]
+  kb-sdk test [<module.Class.method>] [--skip-validation] [--build] [--build-no-cache]
   kb-sdk validate
 
 Commands:

@@ -22,18 +22,7 @@ def validate(config):
         _log_errors(validator.errors)
         exit(1)
     validate_main_methods(config)
-    _run_flake8()
     logger.info('Congrats! Everything looks valid.')
-
-
-def _run_flake8():
-    """ Run the Flake8 validator on the app's codebase. Only shows warnings. """
-    logger.debug('Running flake8 validation')
-    args = ['python', '-m', 'flake8']
-    proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in proc.stdout:
-        logger.warning('flake8: ' + line.decode('utf-8').rstrip())
-    proc.wait()
 
 
 def _log_errors(errors, indent=0):

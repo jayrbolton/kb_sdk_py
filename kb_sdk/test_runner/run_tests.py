@@ -50,7 +50,9 @@ def _build_docker_image(config, options):
     if modified or not image or options['build']:
         # It's easier to log a subprocess command rather than using the docker-py build function
         args = ['docker', 'build', '.', '--tag', image_name]
-        logger.debug('Building docker image with: ' + ' '.join(args))
+        if options['no-cache']:
+            args.append('--no-cache')
+        logger.info('Building docker image with: ' + ' '.join(args))
         proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         for line in proc.stdout:
             logger.debug(line.decode('utf-8').rstrip())

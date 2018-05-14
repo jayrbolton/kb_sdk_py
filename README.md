@@ -1,4 +1,4 @@
-# KBase Software Development Kit
+# sdk prototypes
 
 ## Usage
 

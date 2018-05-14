@@ -16,6 +16,7 @@ def execute(args, config, env):
         logger.debug('Skipping validation')
     options = {
         'single_test': args['<module.Class.method>'],
-        'build': args.get('--build')
+        'build': args.get('--build') or args.get('--build-no-cache'),
+        'no-cache': args.get('--build-no-cache')
     }
     run_tests(config, options)
