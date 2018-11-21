@@ -1,95 +1,90 @@
-# sdk prototypes
+# KBase SDK 2 - Command Line Interface
+
+This is a command line interface for writing, managing, and testing KBase modules.
+
+Also see the [kbase_module]() Python package, which is used inside the modules themselves.
+
+## Install
+
+Install via a quick shell script:
+
+```sh
+curl https://github.com/kbase/kbase_sdk_cli/archive/install.sh | sh
+```
+
+[Read the above shell script to see what it does](). The steps it takes are:
+- Prompts for you to choose an installation directory (defaults to ~/.kbase)
+- Copies the CLI binary and sets up some storage directories
+- Prompts you to add the binary to your $PATH
+
+If you installed to `~/.kbase`, then add `~/.kbase/bin/kbase-sdk` to your $PATH.
+
+## Setup
+
+Set the following environment variables:
+
+* `KBASE_USERNAME` - required - your KBase developer username
+* `KBASE_DEV_TOKEN` - required - your KBase developer token
+* `KBASE_CLI_PATH` - optional - the installation directory of the CLI (defaults to `~/.kbase`)
 
 ## Usage
 
-_Install_
+```sh
+$ kbase-sdk --help
+```
 
-Note that in the future this can be installed with pip and conda in one command
+You can also use the syntax `kbase-sdk -h`. For any of the commands, you can run:
 
 ```sh
-$ git clone https://github.com/jayrbolton/kb_sdk_py
-$ cd kb_sdk_py
-$ pip3 install virtualenv
-$ python3 -m virtualenv env
-$ source env/bin/activate
-$ pip install --editable .[dev]
-$ kb-sdk-py --help
+kbase-sdk <command> --help
 ```
 
-_Run the CLI_
+Or equivalently `kbase-sdk <command> -h`.
+
+### Initialize a module
 
 ```sh
-$ kb-sdk-py --help
+$ kbase-sdk init project_name [directory]
 ```
 
-_Start a new project_
+Directory is optional, and defaults to the project name.
+
+### Validate a module
+
+Inside a module's directory:
 
 ```sh
-$ kb-sdk-py init project_name [directory]
+$ kbase-sdk validate
 ```
 
-_Run the status server_
+### Run integration tests
 
 ```sh
-$ cd project_name
-$ kb-sdk-py status
+$ kbase-sdk test
 ```
 
-_Run tests_
+### Publish or view registration status
+
+View the registration status of your module:
 
 ```sh
-$ kb-sdk-py test
+$ kbase-sdk status
 ```
 
-### Logging
-
-Logs have levels: CRITICAL, ERROR, WARNING, INFO, or DEBUG. You can set the level for commands you run by using the `LOG_LEVEL` environment variable. For example:
+Publish the current version of your module to a kbase catalog:
 
 ```sh
-# Will only show error messages
-$ LOG_LEVEL=error kb-sdk-py validate
+$ kbase-sdk publish
 ```
 
-All logs for the `kb-sdk-py` are saved into `/log/debug.log` at the DEBUG level (this file should be git-ignored). The log file has a size limit of 1MB and will start rotating through a couple backups (`debug.log.1` and `debug.log2.`) when it gets full.
+### Upgrade the CLI
 
-### dotenv
+Check for any updates on the SDK
 
-You can set project-scoped environment variables by adding them to a `.env` file in your app repo. This file should be git-ignored. The format of the `.env` file is as follows:
-
-```
-KBASE_USERNAME=my_name
-KBASE_TOKEN=my_dev_auth_token
-LOG_LEVEL=debug
+```sh
+$ kbase-sdk upgrade
 ```
 
 ## Development
 
-Set up the environment and install dependencies with:
-
-```sh
-$ python3 -m venv env
-$ source env/bin/activate
-$ pip install --editable .
-```
-
-Test that things are set up by running `kb-sdk-py`.
-
-#### Releasing on PyPi
-
-Build the package:
-
-```sh
-# Inside your python env:
-$ pip install -U twine wheel
-$ python setup.py bdist_wheel
-$ twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*
-```
-
-### Project anatomy
-
-* `/kb_sdk`: Root package
-* `/kb_sdk/cli`: Command line handler
-* `/kb_sdk/dev_server`: Development server with flask
-* `/kb_sdk/initializer`: Module initializer
-* `/kb_sdk/config_validation`: Validate config found in kbase.yaml
-* `/kb_sdk/param_validation`: Validate parameters passed to Main
+This section has information about development on the CLI itself (not on KBase modules).
