@@ -52,10 +52,8 @@ kbase-sdk help <command>
 ### Initialize a module
 
 ```sh
-$ kbase-sdk init project_name [directory]
+$ kbase-sdk init [module name]
 ```
-
-Directory is optional, and defaults to the project name.
 
 ### Validate a module
 
