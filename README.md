@@ -94,3 +94,9 @@ $ kbase-sdk upgrade
 ## Development
 
 This section has information about development on the CLI itself (not on KBase modules).
+
+### Setup
+
+This project uses Go, which can be installed [with these instructions](https://golang.org/doc/install). Clone this project under `src/kbase/kbase_sdk_cli` [inside your Go workspace](https://golang.org/doc/code.html).
+
+One way to install dependencies is to run `go get ./...` while inside the project directory.
