@@ -38,21 +38,21 @@ var initCmd = &cobra.Command{
     // We use an empty map for templates that need no data (yet)
     empty_map := make(map[string]string)
     // Write main.py
-    write_template(module_name + "/src/main.py", main_py, empty_map)
+    write_template(module_name + "/src/main.py", main_py, &empty_map)
     // Write test_main.py
-    write_template(module_name + "/src/test/test_main.py", test_main_py, empty_map)
+    write_template(module_name + "/src/test/test_main.py", test_main_py, &empty_map)
     // Write kbase_module.json
     module_info := map[string]string{"Name": module_name, "Username": kbase_username}
-    write_template(module_name + "/kbase_module.json", kbase_module_json, module_info)
+    write_template(module_name + "/kbase_module.json", kbase_module_json, &module_info)
     // Write kbase_methods.json
-    write_template(module_name + "/kbase_methods.json", kbase_methods_json, empty_map)
+    write_template(module_name + "/kbase_methods.json", kbase_methods_json, &empty_map)
     log.Printf("Your new module lives in ./%v\n", module_name)
     log.Printf("Get started with: cd %v && kbase-sdk test\n", module_name)
   },
 }
 
 // Write a template out to a file with logging and error handling
-func write_template(path string, templ_content string, config map[string]string) {
+func write_template(path string, templ_content string, config *map[string]string) {
   log.Printf("Writing %v..\n", path)
   templ, err := template.New(path).Parse(templ_content)
   if err != nil {
