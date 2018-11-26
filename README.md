@@ -39,25 +39,19 @@ You can also use the syntax `kbase-sdk -h`. For any of the commands, you can run
 kbase-sdk <command> --help
 ```
 
-Or equivalently `kbase-sdk <command> -h`.
+Or equivalently `kbase-sdk [command] -h` or `kbase-sdk help [command]`.
 
 ### Initialize a module
 
 ```sh
-$ kbase-sdk init project_name [directory]
+$ kbase-sdk init [project_name] [directory]
 ```
 
 Directory is optional, and defaults to the project name.
 
-### Validate a module
+### Run tests
 
-Inside a module's directory:
-
-```sh
-$ kbase-sdk validate
-```
-
-### Run integration tests
+Run tests through docker on your local machine:
 
 ```sh
 $ kbase-sdk test

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 env
 tmp
 *.egg-info
@@ -5,3 +6,17 @@ tmp
 build
 dist
 log
+=======
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+>>>>>>> 42cea88345ebad42fb716c5a85920c44cfe2c289
