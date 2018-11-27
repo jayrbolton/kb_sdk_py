@@ -1,9 +1,0 @@
-{
-  "echo": {
-    "label": "Echo a message back to you.",
-    "required_params": ["message"],
-    "params": {
-      "message": {"type": "string"}
-    }
-  }
-}

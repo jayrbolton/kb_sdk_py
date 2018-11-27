@@ -46,6 +46,11 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/kbase_module.json", kbase_module_json, &module_info)
     // Write kbase_methods.json
     write_template(module_name + "/kbase_methods.json", kbase_methods_json, &empty_map)
+    // Write the Dockerfile
+    write_template(module_name + "/Dockerfile", dockerfile, &empty_map)
+    // Write requirements.txt
+    write_template(module_name + "/requirements.txt", requirements_txt, &empty_map)
+    // We're done.
     log.Printf("Your new module lives in ./%v\n", module_name)
     log.Printf("Get started with: cd %v && kbase-sdk test\n", module_name)
   },
@@ -71,10 +76,10 @@ func write_template(path string, templ_content string, config *map[string]string
 var main_py = `"""
 This file contains all the methods for this KBase SDK module.
 """
-import kbase_module
+# import kbase_module
 
 
-@kbase_module.method('echo')
+# @kbase_module.method('echo')
 def echo(params):
     """Echo back the given message."""
     return params['message']
@@ -93,7 +98,7 @@ class TestMain(unittest.TestCase):
 
     def test_echo(self):
         message = "Hello world!"
-        result = echo(message)
+        result = echo({'message': message})
         self.assertEqual(result, message)
 ` // end test_main_py
 
@@ -119,6 +124,25 @@ var kbase_methods_json = `{
   }
 }
 ` // end kbase_methods_json
+
+var dockerfile = `FROM python:3.7-alpine
+
+# Install pip dependencies
+WORKDIR /kb/module
+COPY requirements.txt /kb/module/requirements.txt
+RUN apk --update add --virtual build-dependencies python-dev build-base && \
+    pip install --upgrade pip && \
+    pip install --upgrade --no-cache-dir -r requirements.txt && \
+    apk del build-dependencies
+
+# Run the app
+COPY . /kb/module
+RUN chmod -R a+rw /kb/module
+EXPOSE 5000
+ENV PYTHONPATH=$PYTHONPATH:/kb/module/src
+` // end dockerfile
+
+var requirements_txt = `` // `kbase_module==0.0.1`
 
 // Add this command to the set of commands in root
 func init() {

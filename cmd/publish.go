@@ -9,7 +9,7 @@ func init() {
 }
 
 var publishCmd = &cobra.Command{
-  Use: "status",
+  Use: "publish",
   Short: "Publish this module to the KBase catalog.",
   Long: "Publish this module to the KBase catalog.",
   Run: func(cmd *cobra.Command, args []string) {

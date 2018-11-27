@@ -2,8 +2,7 @@ package cmd
 
 import (
   "github.com/spf13/cobra"
-  "fmt"
-  "os"
+  "log"
 )
 
 var rootCmd = &cobra.Command{
@@ -11,13 +10,17 @@ var rootCmd = &cobra.Command{
   Short: "Write, manage, and test KBase modules",
   Long: "Write, manage, and test KBase modules",
   Run: func(cmd *cobra.Command, args []string) {
-    fmt.Println("For help, run: kbase-sdk --help")
+    log.Println("For help, run: kbase-sdk --help")
   },
 }
 
-func Execute() {
+func init () {
+  // Don't log timestamps
+  log.SetFlags(0)
+}
+
+func Execute () {
   if err := rootCmd.Execute(); err != nil {
-    fmt.Println(err)
-    os.Exit(1)
+    log.Fatal(err)
   }
 }
