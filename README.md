@@ -9,7 +9,7 @@ Also see the [kbase_module]() Python package, which is used inside the modules t
 Install via a quick shell script:
 
 ```sh
-curl https://github.com/kbase/kbase_sdk_cli/archive/install.sh | sh
+curl https://raw.githubusercontent.com/jayrbolton/kbase_sdk_cli/master/install.sh | s
 ```
 
 [Read the above shell script to see what it does](). The steps it takes are:
