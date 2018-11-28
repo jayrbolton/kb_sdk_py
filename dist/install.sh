@@ -6,8 +6,7 @@
 {
   set -e
   SUDO=''
-  if [ "$(id -u)" != "0" ]; then
-    SUDO='sudo'
+  if [ "$(id -u)" != "0" ]; then SUDO='sudo'
     echo "This script requires superuser access."
     echo "You will be prompted for your password by sudo."
     # clear any previous sudo permission
@@ -48,12 +47,15 @@
       exit 1
     fi
 
+    echo "Arch: \${ARCH}"
+    echo "OS: \${OS}"
     VERSION=v0.0.1
-    URL=https://github.com/jayrbolton/kbase_sdk_cli/releases/download/\$VERSION/cli_\$OS_\$ARCH
+    URL="https://github.com/jayrbolton/kbase_sdk_cli/releases/download/\${VERSION}/cli_\${OS}_\${ARCH}"
+    echo "Downloading binary from \${URL}"
 
     cd /usr/local/bin
     rm -rf kbase-sdk
-    curl -L --output kbase-sdk "\$URL"
+    curl -L --output kbase-sdk \$URL
     chmod +x kbase-sdk
 
 SCRIPT
@@ -61,5 +63,5 @@ SCRIPT
   # test the CLI
   LOCATION=$(command -v kbase-sdk)
   echo "KBase SDK CLI installed to $LOCATION"
-  kbase-sdk version
+  kbase-sdk help
 }
