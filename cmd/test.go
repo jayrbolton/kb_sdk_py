@@ -8,8 +8,8 @@ import (
   "fmt"
   "encoding/json"
   "io/ioutil"
-  "bufio"
   "path/filepath"
+  "github.com/jayrbolton/kbase_sdk_cli/internal/shell"
 )
 
 func init() {
@@ -60,14 +60,14 @@ var testCmd = &cobra.Command{
     }
     if build {
       log.Println("Building docker container...")
-      run_command("docker", "build", ".", "-t", docker_tag)
+      shell.RunCommand("docker", "build", ".", "-t", docker_tag)
     } else if build_no_cache {
       log.Println("Building docker container without any caching...")
-      run_command("docker", "build", ".", "-t", docker_tag, "--no-cache")
+      shell.RunCommand("docker", "build", ".", "-t", docker_tag, "--no-cache")
     }
     log.Println("Running tests...")
     mount_arg := fmt.Sprintf("%v:/kb/module", abs_path)
-    run_command("docker", "run", "-v", mount_arg,
+    shell.RunCommand("docker", "run", "-v", mount_arg,
       docker_tag, "python", "-m", "unittest", "discover", "/kb/module/src/test")
   },
 }
@@ -79,26 +79,6 @@ func check_docker_tag (name string) bool {
     log.Fatal(err)
   }
   return len(out) > 0
-}
-
-// Run a command, logging all output
-func run_command (name string, arg ...string) {
-  cmd := exec.Command(name, arg...)
-  stdout, _ := cmd.StderrPipe()
-  stderr, _ := cmd.StdoutPipe()
-  cmd.Start()
-  scanner_err := bufio.NewScanner(stderr)
-  scanner_out := bufio.NewScanner(stdout)
-  for scanner_err.Scan() {
-    log.Print(scanner_err.Text())
-  }
-  for scanner_out.Scan() {
-    log.Print(scanner_out.Text())
-  }
-  err := cmd.Wait()
-  if err != nil {
-    log.Fatal("Unable to build container (see above)")
-  }
 }
 
 func check_for_file (path string) {
