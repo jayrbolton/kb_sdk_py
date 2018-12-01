@@ -2,22 +2,31 @@ package cmd
 
 import (
   "github.com/spf13/cobra"
-  "fmt"
-  "os"
+  "log"
+  "github.com/jayrbolton/kbase_sdk_cli/internal/versioning"
 )
 
 var rootCmd = &cobra.Command{
   Use: "kbase-sdk",
-  Short: "Write, manage, and test KBase modules",
-  Long: "Write, manage, and test KBase modules",
+  Short: "Write, manage, and test KBase modules. Show CLI version with --version.",
+  Version: versioning.CurrentVersion,
   Run: func(cmd *cobra.Command, args []string) {
-    fmt.Println("For help, run: kbase-sdk --help")
+    log.Println("For help, run: kbase-sdk --help")
+    new_version := versioning.Fetch()
+    if versioning.IsGreater(new_version, versioning.CurrentVersion) {
+      log.Printf("There is new version of the CLI: %v\n", new_version)
+      log.Println("Run \"kbase-sdk upgrade\" to upgrade to the newest version.")
+    }
   },
 }
 
-func Execute() {
+func init () {
+  // Don't log timestamps
+  log.SetFlags(0)
+}
+
+func Execute () {
   if err := rootCmd.Execute(); err != nil {
-    fmt.Println(err)
-    os.Exit(1)
+    log.Fatal(err)
   }
 }

@@ -6,10 +6,10 @@ Also see the [kbase_module]() Python package, which is used inside the modules t
 
 ## Install
 
-Install via a quick shell script:
+Install via a quick shell command:
 
 ```sh
-curl https://github.com/kbase/kbase_sdk_cli/archive/install.sh | sh
+curl -L https://github.com/jayrbolton/kbase_sdk_cli/releases/download/v0.0.1/install.sh | sh
 ```
 
 [Read the above shell script to see what it does](). The steps it takes are:
