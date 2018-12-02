@@ -2,7 +2,7 @@
 
 This is a command line interface for writing, managing, and testing KBase modules.
 
-Also see the [kbase_module]() Python package, which is used inside the modules themselves.
+Also see the [kbase_module](https://github.com/jayrbolton/kbase_module) package, which is imported inside the actual modules.
 
 ## Install
 
@@ -12,19 +12,16 @@ Install via a quick shell command:
 curl -L https://github.com/jayrbolton/kbase_sdk_cli/releases/download/v0.0.1/install.sh | sh
 ```
 
-[Read the above shell script to see what it does](). The steps it takes are:
-- Prompts for you to choose an installation directory (defaults to ~/.kbase)
-- Copies the CLI binary and sets up some storage directories
-- Prompts you to add the binary to your $PATH
+The above script downloads a binary from the Github releases page to `/usr/local/bin/kbase-sdk`
 
-If you installed to `~/.kbase`, then add `~/.kbase/bin/kbase-sdk` to your $PATH.
+You can install the CLI manually by going to the releases page and selecting the binary for your OS and architecture. Download the file to a directory in your executable `$PATH`, such as `/usr/local/bin` or `~/.local/bin`.
 
 ## Setup
 
 Set the following environment variables:
 
 * `KBASE_USERNAME` - required - your KBase developer username
-* `KBASE_DEV_TOKEN` - required - your KBase developer token
+* `KBASE_DEV_TOKEN` - optional - your KBase developer token
 * `KBASE_CLI_PATH` - optional - the installation directory of the CLI (defaults to `~/.kbase`)
 
 ## Usage
@@ -35,68 +32,52 @@ $ kbase-sdk help
 
 You can also use the syntax `kbase-sdk -h` or `kbase-sdk --help`.
 
-For any of the commands, you can run
-
-```sh
-kbase-sdk <command> --help
-```
-
-to get quick usage details (equivalently `kbase-sdk <command> -h`.
-
-To get more detailed information about a command, run
+To get more detailed information about a command, run any of
 
 ```sh
 kbase-sdk help <command>
+kbase-sdk <command> --help
+kbase-sdk <command> -h
 ```
 
 ### Initialize a module
 
 ```sh
-$ kbase-sdk init [module name]
+kbase-sdk init [module name]
 ```
 
-### Validate a module
+### Run tests
 
-Inside a module's directory:
-
-```sh
-$ kbase-sdk validate
-```
-
-### Run integration tests
+In a module's directory, run
 
 ```sh
-$ kbase-sdk test
-```
-
-### Publish or view registration status
-
-View the registration status of your module:
-
-```sh
-$ kbase-sdk status
-```
-
-Publish the current version of your module to a kbase catalog:
-
-```sh
-$ kbase-sdk publish
+kbase-sdk test
 ```
 
 ### Upgrade the CLI
 
-Check for any updates on the SDK
+Check for any updates on the SDK with
 
 ```sh
-$ kbase-sdk upgrade
+kbase-sdk upgrade
 ```
 
 ## Development
 
 This section has information about development on the CLI itself (not on KBase modules).
 
-### Setup
-
 This project uses Go, which can be installed [with these instructions](https://golang.org/doc/install). Clone this project under `src/kbase/kbase_sdk_cli` [inside your Go workspace](https://golang.org/doc/code.html).
 
 One way to install dependencies is to run `go get ./...` while inside the project directory.
+
+### Publishing updates
+
+To publish new CLI code, first run:
+
+```sh
+bash build.sh
+```
+
+This will generate binaries in the `dist/` folder. Then, create a new Github release on the `kbase/kbase_sdk_cli` repository. Upload all the binaries along with the `install.sh` script.
+
+Users of the CLI can automatically download your new release by running `kbase-sdk upgrade`.
