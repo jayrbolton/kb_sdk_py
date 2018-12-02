@@ -8,10 +8,14 @@ import (
   "log"
 )
 
+// Add the init command to the set of commands in root
+func init() {
+  rootCmd.AddCommand(initCmd)
+}
+
 var initCmd = &cobra.Command{
   Use: "init [module name]",
-  Short: "Initialize a new KBase module",
-  Long: "Initialize a new KBase module",
+  Short: "Initialize a new KBase SDK module",
   Args: cobra.MinimumNArgs(1),
   Run: func(cmd *cobra.Command, args []string) {
     var module_name = args[0]
@@ -50,6 +54,8 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/Dockerfile", dockerfile, &empty_map)
     // Write requirements.txt
     write_template(module_name + "/requirements.txt", requirements_txt, &empty_map)
+    // Write gitignore
+    write_template(module_name + "/.gitignore", gitignore, &empty_map)
     // We're done.
     log.Printf("Your new module lives in ./%v\n", module_name)
     log.Printf("Get started with: cd %v && kbase-sdk test\n", module_name)
@@ -76,10 +82,8 @@ func write_template(path string, templ_content string, config *map[string]string
 var main_py = `"""
 This file contains all the methods for this KBase SDK module.
 """
-# import kbase_module
 
 
-# @kbase_module.method('echo')
 def echo(params):
     """Echo back the given message."""
     return params['message']
@@ -90,25 +94,33 @@ def echo(params):
 var test_main_py = `"""
 This file contains tests for src/main.py
 """
+import kbase_module
 import unittest
-from main import echo
 
 
 class TestMain(unittest.TestCase):
 
     def test_echo(self):
+        """Test the echo function."""
         message = "Hello world!"
-        result = echo({'message': message})
+        result = kbase_module.run_method('echo', {'message': message})
         self.assertEqual(result, message)
+
+    def test_echo_invalid_params(self):
+        """Test the case where we don't pass the 'message' param."""
+        with self.assertRaises(RuntimeError) as context:
+            kbase_module.run_method('echo', {})
+        msg = "'message' is a required property"
+        self.assertTrue(msg in str(context.exception))
 ` // end test_main_py
 
 
 // Template for src/kbase-module.json
+// Requires module name and username
 var kbase_module_json = `{
   "name": "{{.Name}}",
   "version": "0.0.1",
-  "author": "{{.Username}}",
-  "sdk_version": "2.0.0"
+  "owners": ["{{.Username}}"]
 }
 ` // end kbase_module_json
 
@@ -125,26 +137,63 @@ var kbase_methods_json = `{
 }
 ` // end kbase_methods_json
 
+// Template for the Dockerfile
 var dockerfile = `FROM python:3.7-alpine
 
 # Install pip dependencies
 WORKDIR /kb/module
 COPY requirements.txt /kb/module/requirements.txt
 RUN apk --update add --virtual build-dependencies python-dev build-base && \
-    pip install --upgrade pip && \
-    pip install --upgrade --no-cache-dir -r requirements.txt && \
+    pip install --upgrade --no-cache-dir pip -r requirements.txt && \
     apk del build-dependencies
 
 # Run the app
 COPY . /kb/module
 RUN chmod -R a+rw /kb/module
 EXPOSE 5000
-ENV PYTHONPATH=$PYTHONPATH:/kb/module/src
+ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]  # from the kbase_module package
 ` // end dockerfile
 
-var requirements_txt = `` // `kbase_module==0.0.1`
+// Template for the pip dependencies in requirements.txt
+var requirements_txt = `--extra-index-url https://pypi.anaconda.org/kbase/simple
+# This is needed for basic module functionality 
+kbase_module
+# For checking Pep8 syntax standards
+flake8>3` // end requirements_txt
 
-// Add this command to the set of commands in root
-func init() {
-  rootCmd.AddCommand(initCmd)
-}
+// Gitignore tempate with common default;
+
+var gitignore = `
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+eggs/
+.eggs/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+`

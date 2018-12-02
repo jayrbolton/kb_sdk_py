@@ -54,6 +54,14 @@ In a module's directory, run
 kbase-sdk test
 ```
 
+On first run, your Docker container will be built. On each subsequent run, it will use the previously built container. To force a new build, do
+
+```sh
+kbase-sdk test --build
+```
+
+You can also build without using any caching with `kbase-sdk test --build-no-cache`.
+
 ### Upgrade the CLI
 
 Check for any updates on the SDK with

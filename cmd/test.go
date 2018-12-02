@@ -12,6 +12,11 @@ import (
   "github.com/jayrbolton/kbase_sdk_cli/internal/shell"
 )
 
+// Flag -- whether to rebuild docker
+var build bool
+// Flag -- whether to rebuild docker without any caching
+var build_no_cache bool
+
 func init() {
   testCmd.PersistentFlags().BoolVar(&build, "build", false, "Rebuild the docker container before running tests.")
   testCmd.PersistentFlags().BoolVar(&build_no_cache, "build-no-cache", false, "Rebuild the docker container with no cache.")
@@ -21,11 +26,6 @@ func init() {
 type Module struct {
   Name string `json:"name"`
 }
-
-// Flag -- whether to rebuild docker
-var build bool
-// Flag -- whether to rebuild docker without any caching
-var build_no_cache bool
 
 var testCmd = &cobra.Command{
   Use: "test",
@@ -51,13 +51,16 @@ var testCmd = &cobra.Command{
       log.Fatalf("Unable to open kbase_module.json: %v", err)
     }
     json.Unmarshal(kbase_module_bytes, &module)
-    log.Printf("Module name: %v", module.Name)
+    log.Printf("Module name: %v\n", module.Name)
     docker_tag := fmt.Sprintf("kbase_modules/%v", module.Name)
+    log.Printf("Docker tag: %v\n", docker_tag)
+    log.Printf("To open a shell in your container, run: docker run -it %v shell\n", docker_tag)
     // Build the image if the tag is not found
     image_exists := check_docker_tag(docker_tag)
     if !image_exists {
       build = true
     }
+    // build is global to this file, set either as a flag or above
     if build {
       log.Println("Building docker container...")
       shell.RunCommand("docker", "build", ".", "-t", docker_tag)
@@ -67,8 +70,8 @@ var testCmd = &cobra.Command{
     }
     log.Println("Running tests...")
     mount_arg := fmt.Sprintf("%v:/kb/module", abs_path)
-    shell.RunCommand("docker", "run", "-v", mount_arg,
-      docker_tag, "python", "-m", "unittest", "discover", "/kb/module/src/test")
+    // Uses the entrypoint.sh script from the kbase_module package
+    shell.RunCommand("docker", "run", "-v", mount_arg, docker_tag, "test")
   },
 }
 
