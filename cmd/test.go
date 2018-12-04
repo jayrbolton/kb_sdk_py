@@ -6,10 +6,10 @@ import (
   "os"
   "log"
   "fmt"
-  "encoding/json"
   "io/ioutil"
   "path/filepath"
   "github.com/jayrbolton/kbase_sdk_cli/internal/shell"
+  "gopkg.in/yaml.v2"
 )
 
 // Flag -- whether to rebuild docker
@@ -24,7 +24,7 @@ func init() {
 }
 
 type Module struct {
-  Name string `json:"name"`
+  Name string `yaml:"module-name"`
 }
 
 var testCmd = &cobra.Command{
@@ -41,16 +41,19 @@ var testCmd = &cobra.Command{
     }
     // Check for presence of basic config files
     check_for_file("./kbase_methods.json")
-    check_for_file("./kbase_module.json")
+    check_for_file("./kbase.yaml")
     check_for_file("./src/main.py")
     check_for_file("./Dockerfile")
-    // Read in the module name from kbase_module.json
+    // Read in the module name from kbase.yaml
     var module Module
-    kbase_module_bytes, err := ioutil.ReadFile("kbase_module.json")
+    kbase_module_bytes, err := ioutil.ReadFile("kbase.yaml")
     if err != nil {
-      log.Fatalf("Unable to open kbase_module.json: %v", err)
+      log.Fatalf("Unable to open kbase.yaml: %v\n", err)
     }
-    json.Unmarshal(kbase_module_bytes, &module)
+    err = yaml.Unmarshal(kbase_module_bytes, &module)
+    if err != nil {
+      log.Fatalf("Unable to decode kbase.yaml: %v\n", err)
+    }
     log.Printf("Module name: %v\n", module.Name)
     docker_tag := fmt.Sprintf("kbase_modules/%v", module.Name)
     log.Printf("Docker tag: %v\n", docker_tag)

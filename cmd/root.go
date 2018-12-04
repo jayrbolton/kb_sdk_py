@@ -12,11 +12,6 @@ var rootCmd = &cobra.Command{
   Version: versioning.CurrentVersion,
   Run: func(cmd *cobra.Command, args []string) {
     log.Println("For help, run: kbase-sdk --help")
-    new_version := versioning.Fetch()
-    if versioning.IsGreater(new_version, versioning.CurrentVersion) {
-      log.Printf("There is new version of the CLI: %v\n", new_version)
-      log.Println("Run \"kbase-sdk upgrade\" to upgrade to the newest version.")
-    }
   },
 }
 

@@ -25,7 +25,7 @@ var initCmd = &cobra.Command{
       log.Fatal("Please set the KBASE_USERNAME environment variable first.\n")
     }
     // Check format of the project name
-    match, _ := regexp.MatchString(`^[a-zA-Z_\-0-9]+$`, module_name)
+    match, _ := regexp.MatchString(`^[a-zA-Z][a-zA-Z_\-0-9]+$`, module_name)
     if !match {
       log.Fatalf("Invalid module name \"%v\". It should be alphanumeric.\n", module_name)
     }
@@ -45,9 +45,9 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/src/main.py", main_py, &empty_map)
     // Write test_main.py
     write_template(module_name + "/src/test/test_main.py", test_main_py, &empty_map)
-    // Write kbase_module.json
+    // Write kbase.yaml
     module_info := map[string]string{"Name": module_name, "Username": kbase_username}
-    write_template(module_name + "/kbase_module.json", kbase_module_json, &module_info)
+    write_template(module_name + "/kbase.yaml", kbase_yaml, &module_info)
     // Write kbase_methods.json
     write_template(module_name + "/kbase_methods.json", kbase_methods_json, &empty_map)
     // Write the Dockerfile
@@ -117,12 +117,12 @@ class TestMain(unittest.TestCase):
 
 // Template for src/kbase-module.json
 // Requires module name and username
-var kbase_module_json = `{
-  "name": "{{.Name}}",
-  "version": "0.0.1",
-  "owners": ["{{.Username}}"]
-}
-` // end kbase_module_json
+var kbase_yaml = `module-name: {{.Name}}
+module-description: Enter a description here
+service-language: python
+module-version: 0.0.1
+owners: ["{{.Username}}"]
+` // end kbase_yaml
 
 
 // Template for src/kbase-methods.json
@@ -136,6 +136,7 @@ var kbase_methods_json = `{
   }
 }
 ` // end kbase_methods_json
+
 
 // Template for the Dockerfile
 var dockerfile = `FROM python:3.7-alpine
@@ -154,6 +155,7 @@ EXPOSE 5000
 ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]  # from the kbase_module package
 ` // end dockerfile
 
+
 // Template for the pip dependencies in requirements.txt
 var requirements_txt = `--extra-index-url https://pypi.anaconda.org/kbase/simple
 # This is needed for basic module functionality 
@@ -161,8 +163,8 @@ kbase_module
 # For checking Pep8 syntax standards
 flake8>3` // end requirements_txt
 
-// Gitignore tempate with common default;
 
+// Gitignore tempate with common defaults:
 var gitignore = `
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -196,4 +198,4 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-`
+` // end gitignore
