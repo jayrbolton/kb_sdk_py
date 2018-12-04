@@ -8,7 +8,7 @@ for platform in "${platforms[@]}"; do
   GOARCH=${platform_split[1]}
   output_name='cli_'$GOOS'_'$GOARCH
   echo "building to ./dist/$output_name"
-  if ! go build -o "dist/$output_name"; then
+  if ! env GOOS=$GOOS GOOARCH=$GOARCH go build -o "dist/$output_name"; then
     echo 'An error has occured, aborting.'
     exit 1
   fi
