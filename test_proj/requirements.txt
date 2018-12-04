@@ -1,5 +1,0 @@
---extra-index-url https://pypi.anaconda.org/kbase/simple
-# This is needed for basic module functionality 
-kbase_module
-# For checking Pep8 syntax standards
-flake8>3

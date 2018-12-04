@@ -52,8 +52,6 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/kbase_methods.json", kbase_methods_json, &empty_map)
     // Write the Dockerfile
     write_template(module_name + "/Dockerfile", dockerfile, &empty_map)
-    // Write requirements.txt
-    write_template(module_name + "/requirements.txt", requirements_txt, &empty_map)
     // Write gitignore
     write_template(module_name + "/.gitignore", gitignore, &empty_map)
     // We're done.
@@ -142,26 +140,19 @@ var kbase_methods_json = `{
 var dockerfile = `FROM python:3.7-alpine
 
 # Install pip dependencies
-WORKDIR /kb/module
-COPY requirements.txt /kb/module/requirements.txt
 RUN apk --update add --virtual build-dependencies python-dev build-base && \
-    pip install --upgrade --no-cache-dir pip -r requirements.txt && \
+    pip install --upgrade --no-cache-dir --extra-index-url https://pypi.anaconda.org/kbase/simple \
+      kbase_module \
+      flake8 && \
     apk del build-dependencies
 
 # Run the app
+WORKDIR /kb/module
 COPY . /kb/module
 RUN chmod -R a+rw /kb/module
 EXPOSE 5000
 ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]  # from the kbase_module package
 ` // end dockerfile
-
-
-// Template for the pip dependencies in requirements.txt
-var requirements_txt = `--extra-index-url https://pypi.anaconda.org/kbase/simple
-# This is needed for basic module functionality 
-kbase_module
-# For checking Pep8 syntax standards
-flake8>3` // end requirements_txt
 
 
 // Gitignore tempate with common defaults:

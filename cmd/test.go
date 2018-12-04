@@ -57,6 +57,7 @@ var testCmd = &cobra.Command{
     log.Printf("Module name: %v\n", module.Name)
     docker_tag := fmt.Sprintf("kbase_modules/%v", module.Name)
     log.Printf("Docker tag: %v\n", docker_tag)
+    log.Printf("To re-build your docker container, run: kbase-sdk test --build\n", docker_tag)
     log.Printf("To open a shell in your container, run: docker run -it %v shell\n", docker_tag)
     // Build the image if the tag is not found
     image_exists := check_docker_tag(docker_tag)
