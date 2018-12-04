@@ -22,7 +22,6 @@ Set the following environment variables:
 
 * `KBASE_USERNAME` - required - your KBase developer username
 * `KBASE_DEV_TOKEN` - optional - your KBase developer token
-* `KBASE_CLI_PATH` - optional - the installation directory of the CLI (defaults to `~/.kbase`)
 
 ## Usage
 
