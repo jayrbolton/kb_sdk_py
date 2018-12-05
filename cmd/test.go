@@ -40,7 +40,7 @@ var testCmd = &cobra.Command{
       log.Fatal(err)
     }
     // Check for presence of basic config files
-    check_for_file("./kbase_methods.json")
+    check_for_file("./kbase_methods.yaml")
     check_for_file("./kbase.yaml")
     check_for_file("./src/main.py")
     check_for_file("./Dockerfile")

@@ -48,8 +48,8 @@ var initCmd = &cobra.Command{
     // Write kbase.yaml
     module_info := map[string]string{"Name": module_name, "Username": kbase_username}
     write_template(module_name + "/kbase.yaml", kbase_yaml, &module_info)
-    // Write kbase_methods.json
-    write_template(module_name + "/kbase_methods.json", kbase_methods_json, &empty_map)
+    // Write kbase_methods.yaml
+    write_template(module_name + "/kbase_methods.yaml", kbase_methods_yaml, &empty_map)
     // Write the Dockerfile
     write_template(module_name + "/Dockerfile", dockerfile, &empty_map)
     // Write gitignore
@@ -113,7 +113,7 @@ class TestMain(unittest.TestCase):
 ` // end test_main_py
 
 
-// Template for src/kbase-module.json
+// Template for kbase.yaml
 // Requires module name and username
 var kbase_yaml = `module-name: {{.Name}}
 module-description: Enter a description here
@@ -123,17 +123,18 @@ owners: ["{{.Username}}"]
 ` // end kbase_yaml
 
 
-// Template for src/kbase-methods.json
-var kbase_methods_json = `{
-  "echo": {
-    "label": "Echo a message back to you.",
-    "required_params": ["message"],
-    "params": {
-      "message": {"type": "string"}
-    }
-  }
-}
-` // end kbase_methods_json
+// Template for kbase_methods.yaml
+var kbase_methods_yaml = `echo:
+  title: Echo
+  description: Repeat a message back to you
+  required_params: [message]
+  params:
+    message:
+      title: Message
+      decription: String to echo back
+      type: string
+      minLength: 1
+` // end kbase_methods_yaml
 
 
 // Template for the Dockerfile
