@@ -54,6 +54,8 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/Dockerfile", dockerfile, &empty_map)
     // Write gitignore
     write_template(module_name + "/.gitignore", gitignore, &empty_map)
+    // Write README.md
+    write_template(module_name + "/README.md", readme, &module_info)
     // We're done.
     log.Printf("Your new module lives in ./%v\n", module_name)
     log.Printf("Get started with: cd %v && kbase-sdk test\n", module_name)
@@ -191,3 +193,14 @@ venv.bak/
 .dmypy.json
 dmypy.json
 ` // end gitignore
+
+var readme = `# {{.Name}} (KBase module)
+
+This is a [KBase](https://kbase.us) module. You need to install the SDK command-line interface to run this module.
+
+<TODO -- enter an extended description here>
+
+## Development
+
+Run tests with: kbase-sdk test
+`

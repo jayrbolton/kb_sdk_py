@@ -18,8 +18,10 @@ var build bool
 var build_no_cache bool
 
 func init() {
-  testCmd.PersistentFlags().BoolVar(&build, "build", false, "Rebuild the docker container before running tests.")
-  testCmd.PersistentFlags().BoolVar(&build_no_cache, "build-no-cache", false, "Rebuild the docker container with no cache.")
+  testCmd.PersistentFlags().BoolVar(&build, "build", false,
+    "Rebuild the docker container before running tests.")
+  testCmd.PersistentFlags().BoolVar(&build_no_cache, "build-no-cache", false,
+    "Rebuild the docker container with no cache.")
   rootCmd.AddCommand(testCmd)
 }
 
@@ -72,10 +74,16 @@ var testCmd = &cobra.Command{
       log.Println("Building docker container without any caching...")
       shell.RunCommand("docker", "build", ".", "-t", docker_tag, "--no-cache")
     }
-    log.Println("Running tests...")
     mount_arg := fmt.Sprintf("%v:/kb/module", abs_path)
-    // Uses the entrypoint.sh script from the kbase_module package
-    shell.RunCommand("docker", "run", "-v", mount_arg, docker_tag, "test")
+    docker_args := []string{"run", "-v", mount_arg}
+    // Check for a .env file and pass it to docker if it exists
+    env_path := ".env"
+    _, err = os.Stat(env_path)
+    if err == nil {
+      docker_args = append(docker_args, "--env-file", env_path)
+    }
+    docker_args = append(docker_args, docker_tag, "test")
+    shell.RunCommand("docker", docker_args...)
   },
 }
 
