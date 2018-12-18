@@ -9,6 +9,7 @@ import (
   "io/ioutil"
   "path/filepath"
   "github.com/jayrbolton/kbase_sdk_cli/internal/shell"
+  "github.com/jayrbolton/kbase_sdk_cli/internal/module_config"
   "gopkg.in/yaml.v2"
 )
 
@@ -38,14 +39,11 @@ var testCmd = &cobra.Command{
       log.Fatal("Unable to run docker, make sure it is installed first: https://docs.docker.com/install/")
     }
     abs_path, err := filepath.Abs("./")
+    // Validate presence of module files
+    module_config.CheckFiles()
     if err != nil {
       log.Fatal(err)
     }
-    // Check for presence of basic config files
-    check_for_file("./kbase_methods.yaml")
-    check_for_file("./kbase.yaml")
-    check_for_file("./src/main.py")
-    check_for_file("./Dockerfile")
     // Read in the module name from kbase.yaml
     var module Module
     kbase_module_bytes, err := ioutil.ReadFile("kbase.yaml")
@@ -94,10 +92,4 @@ func check_docker_tag (name string) bool {
     log.Fatal(err)
   }
   return len(out) > 0
-}
-
-func check_for_file (path string) {
-  if _, err := os.Stat(path); os.IsNotExist(err) {
-    log.Fatalf("%v does not exist. Are you in a KBase module directory?", path)
-  }
 }

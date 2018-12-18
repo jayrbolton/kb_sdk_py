@@ -12,4 +12,3 @@ func IsGreater (semver1 string, semver2 string) bool {
   split2 := strings.Split(semver2, ".")
   return split1[0] > split2[0] || split1[1] > split2[1] || split1[2] > split2[2]
 }
-

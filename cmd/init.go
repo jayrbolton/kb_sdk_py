@@ -56,6 +56,8 @@ var initCmd = &cobra.Command{
     write_template(module_name + "/.gitignore", gitignore, &empty_map)
     // Write README.md
     write_template(module_name + "/README.md", readme, &module_info)
+    // Write compile_report.json
+    write_template(module_name + "/compile_report.json", compile_report, &module_info)
     // We're done.
     log.Printf("Your new module lives in ./%v\n", module_name)
     log.Printf("Get started with: cd %v && kbase-sdk test\n", module_name)
@@ -160,6 +162,9 @@ ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]  # from the kbase_module packa
 
 // Gitignore tempate with common defaults:
 var gitignore = `
+# KBase build files
+compile_report.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -202,5 +207,17 @@ This is a [KBase](https://kbase.us) module. You need to install the SDK command-
 
 ## Development
 
-Run tests with: kbase-sdk test
+1. Install the [KBase SDK](https://github.com/jayrbolton/kbase_sdk_cli)
+2. Run tests with: kbase-sdk test
 `
+
+var compile_report = `{
+  "function_places": {},
+  "functions": {},
+  "impl_file_path": "",
+  "module_name": "{{.Name}}",
+  "sdk_git_commit": "0",
+  "sdk_version": "0",
+  "spec_files": [{"content": "", "is_main": 1}]
+}
+` // end compile_report
