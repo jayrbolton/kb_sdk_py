@@ -65,12 +65,13 @@ var testCmd = &cobra.Command{
       build = true
     }
     // build is global to this file, set either as a flag or above
-    if build {
+    if build || build_no_cache {
+      build_args := []string{"build", ".", "-t", docker_tag, "--build-arg", "DEVELOPMENT=1"}
+      if build_no_cache {
+        build_args = append(build_args, "--no-cache")
+      }
       log.Println("Building docker container...")
-      shell.RunCommand("docker", "build", ".", "-t", docker_tag)
-    } else if build_no_cache {
-      log.Println("Building docker container without any caching...")
-      shell.RunCommand("docker", "build", ".", "-t", docker_tag, "--no-cache")
+      shell.RunCommand("docker", build_args...)
     }
     mount_arg := fmt.Sprintf("%v:/kb/module", abs_path)
     docker_args := []string{"run", "-v", mount_arg}
