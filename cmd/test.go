@@ -74,7 +74,7 @@ var testCmd = &cobra.Command{
       shell.RunCommand("docker", build_args...)
     }
     mount_arg := fmt.Sprintf("%v:/kb/module", abs_path)
-    docker_args := []string{"run", "-v", mount_arg}
+    docker_args := []string{"run", "-t", "-v", mount_arg}
     // Check for a .env file and pass it to docker if it exists
     env_path := ".env"
     _, err = os.Stat(env_path)
