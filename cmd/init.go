@@ -1,5 +1,7 @@
 package cmd
 
+// Command to initialize a new KBase module
+
 import (
   "github.com/spf13/cobra"
   "os"
@@ -8,7 +10,6 @@ import (
   "log"
 )
 
-// Add the init command to the set of commands in root
 func init() {
   rootCmd.AddCommand(initCmd)
 }

@@ -1,5 +1,7 @@
 package module_config
 
+// Utilities for loading and validating the module and method data from the config files
+
 import (
   "log"
   "os"
@@ -94,9 +96,7 @@ func validate_file (path string, schema string) []byte {
   if err != nil {
     log.Printf("Unable to validate kbase.yaml file:\n%v\n", err)
   }
-  if result.Valid() {
-    log.Printf("%v looks valid\n", path)
-  } else {
+  if !result.Valid() {
     log.Println("kbase.yaml validation errors:")
     for _, desc := range result.Errors() {
       log.Printf(" - %s\n", desc)
