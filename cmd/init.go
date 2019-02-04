@@ -142,6 +142,7 @@ var kbase_methods_yaml = `echo:
 
 // Template for the Dockerfile
 var dockerfile = `FROM python:3.7-alpine
+ARG DEVELOPMENT
 
 # Install pip dependencies
 RUN apk --update add --virtual build-dependencies python-dev build-base && \
